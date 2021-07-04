@@ -1,0 +1,19 @@
+<!-- Discussion creation page -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+<!-- Dynamic title -->
+{% block head_title %}Nuova discussione | {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center mt-4">
+    <div class="col-6">
+      <h2>Crea nuova discussione in: {{ sezione }}</h2>
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-info" value="Crea">
+      </form>
+    </div>
+  </div>
+{% endblock %}

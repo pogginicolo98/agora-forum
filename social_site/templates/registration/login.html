@@ -1,0 +1,24 @@
+<!-- User login page -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+<!-- Dynamic title -->
+{% block head_title %}Login | {{ block.super }}{% endblock %}
+
+<!-- Login forms -->
+{% block content %}
+  <div class="row justify-content-center mt-4">
+    <div class="col-4 text-center">
+      <h2>Accedi</h2>
+      <form action="{% url 'login' %}" method="POST" novalidate>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-info" value="Login">
+        <!-- Continue to the next page after user logged in -->
+        <input type="hidden" name="next" value="{{ next }}">
+      </form>
+      <br>
+      <p><a href="{% url 'password_reset' %}">Password dimenticata?</a></p>
+    </div>
+  </div>
+{% endblock %}

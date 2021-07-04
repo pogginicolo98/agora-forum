@@ -1,0 +1,17 @@
+<!-- Confirm delete post page -->
+{% extends 'base.html' %}
+
+<!-- Dynamic title -->
+{% block head_title %}Conferma | {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center mt-3">
+    <div class="col-4 text-center">
+      <form method="POST">
+        {% csrf_token %}
+        <h4>Vuoi cancellare il post?</h4>
+        <input type="submit" class="btn btn-danger" value="Confermo">
+      </form>
+    </div>
+  </div>
+{% endblock %}

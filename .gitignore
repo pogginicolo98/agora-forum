@@ -1,0 +1,4 @@
+# Project exclude paths
+/.idea/
+/v_env/
+/social_site/password.py
