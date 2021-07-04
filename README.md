@@ -1,6 +1,7 @@
-Personal project to practice with Django and Bootstrap4 frameworks
+# Forum site - Personal Project
 
-This web app is a forum with the following features:
+Project to practice with Django and Bootstrap4 frameworks.
+This web app is a forum site with the following features:
 1) Forum layout: sections, discussions and posts
 2) User registration and authentication
 3) Pagination of contents
