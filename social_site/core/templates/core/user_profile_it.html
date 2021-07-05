@@ -13,9 +13,9 @@
         </div>
         <div class="card-body">
           <p class="lead">@{{ user }}</p>
-          <p class="mb-0">Iscrizione: {{ user.date_joined|date:'d M Y' }}</p>
+          <p class="mb-0">Iscritto: {{ user.date_joined|date:'d M Y' }}</p>
           <p class="mb-0">Discussioni: {{ user.discussioni.count }}</p>
-          <p class="mb-0">Posts: {{ user.posts.count }}</p>
+          <p class="mb-0">Post: {{ user.posts.count }}</p>
         </div>
         <div class="card-footer"></div>
       </div>
@@ -27,9 +27,9 @@
           <h4>Discussioni</h4>
         </div>
         <div class="card-body">
-          {% for discussione in discussioni_utente %}
-            <a href="{{ discussione.get_absolute_url }}">{{ discussione.titolo }}</a>
-            <p class="text-muted">{{ discussione.sezione_appartenenza }}</p>
+          {% for discussion in user_discussions %}
+            <a href="{{ discussion.get_absolute_url }}">{{ discussion.titolo }}</a>
+            <p class="text-muted">{{ discussion.sezione_appartenenza }}</p>
           {% empty %}
             {% if request.user != user %}
               <p>{{ user }} non ha creato alcuna discussione!</p>

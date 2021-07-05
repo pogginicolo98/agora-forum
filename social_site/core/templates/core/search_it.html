@@ -5,11 +5,12 @@
 {% block head_title %}Cerca | {{ block.super }}{% endblock %}
 
 {% block content %}
-  <h1 class="mt-3">Risultati della ricerca</h1>
+  <h1 class="mt-3">Risultati di ricerca</h1>
   <hr>
   <div class="row mt-3">
+    <!-- Post found -->
     <div class="col-4">
-      <h5><strong>Posts</strong></h5>
+      <h5><strong>Post</strong></h5>
       <hr>
       {% if posts %}
         {% for post in posts %}
@@ -22,23 +23,25 @@
         <p>-----</p>
       {% endif %}
     </div>
+    <!-- Discussions found -->
     <div class="col-4">
       <h5><strong>Discussioni</strong></h5>
       <hr>
-      {% if discussioni %}
-        {% for discussione in discussioni %}
-          <p>✧ <a href="{{ discussione.get_absolute_url }}">{{ discussione.titolo }}</a></p>
+      {% if Discussions %}
+        {% for discussion in discussions %}
+          <p>✧ <a href="{{ discussion.get_absolute_url }}">{{ discussion.titolo }}</a></p>
         {% endfor %}
       {% else %}
         <p>-----</p>
       {% endif %}
     </div>
+    <!-- Users found -->
     <div class="col-4">
       <h5><strong>Utenti</strong></h5>
       <hr>
       {% if users %}
-        {% for utente in users %}
-          <p><a href="{% url 'user_profile' username=utente.username %}">@{{ utente.username }}</a></p>
+        {% for user in users %}
+          <p><a href="{% url 'user_profile' username=user.username %}">@{{ user.username }}</a></p>
         {% endfor %}
       {% else %}
         <p>-----</p>

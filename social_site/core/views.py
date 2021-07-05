@@ -4,41 +4,51 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.list import ListView
 from forum.models import Discussione, Sezione, Post
 
-# Create your views here.
-class HomeView(ListView):
+
+class Homepage(ListView):
+    """ ListView that shows a list of all sections active in the forum """
+
     queryset = Sezione.objects.all()
-    template_name = 'core/homepage.html'
-    context_object_name = 'lista_sezioni'
+    template_name = 'core/homepage_it.html'
+    context_object_name = 'sections'
+
 
 class UsersList(LoginRequiredMixin, ListView):
-    """ ListView showing a list of all users registered """
+    """ ListView that shows a list of all users signed up """
 
     model = User
-    template_name = 'core/users.html'
+    template_name = 'core/users_it.html'
+    context_object_name = 'users'
+
 
 def user_profile_view(request, username):
-    # Getting the user corresponding the username passed through the url user/'username' and show the profile page
+    # Get the user corresponding the username passed through the url user/'username' and show the profile page
+
     user = get_object_or_404(User, username=username)
-    discussioni_utente = Discussione.objects.filter(autore_discussione=user).order_by('-pk')
+    user_discussions = Discussione.objects.filter(autore_discussione=user).order_by('-pk')
     context = {
         'user': user,
-        'discussioni_utente': discussioni_utente
+        'user_discussions': user_discussions
     }
-    return render(request, "core/user_profile.html", context)
+    return render(request, "core/user_profile_it.html", context)
 
-def cerca(request):
-    if 'q' in request.GET:
-        querystring = request.GET.get('q')
+
+def search_bar(request):
+    # Search in discussions, posts and users for the keyword written in the search bar
+
+    if 'search' in request.GET:
+        # URL contains 'search'
+        querystring = request.GET.get('search')
         if len(querystring) == 0:
-            return redirect('/cerca/')
-        discussioni = Discussione.objects.filter(titolo__icontains=querystring)
+            return redirect('/search/')
+        discussions = Discussione.objects.filter(titolo__icontains=querystring)
         posts = Post.objects.filter(contenuto__icontains=querystring)
         users = User.objects.filter(username__icontains=querystring)
         context = {
-            'discussioni': discussioni,
+            'discussions': discussions,
             'posts': posts,
             'users': users
         }
-        return render(request, 'core/cerca.html', context)
+        return render(request, 'core/search_it.html', context)
     else:
-        return render(request, 'core/cerca.html')
+        return render(request, 'core/search_it.html')
