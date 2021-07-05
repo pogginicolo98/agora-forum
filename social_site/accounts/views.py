@@ -1,15 +1,15 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from accounts.forms import FormRegistrazione
+from accounts.forms import SignUpForm
 
-# Create your views here.
-def registrazione_view(request):
-    # View function for the user registration
+
+def signup_view(request):
+    # Function for sign up new users
 
     if request.method == 'POST':
-        # Binded session, forms validation
-        form = FormRegistrazione(request.POST)
+        # Bound session, compiled form
+        form = SignUpForm(request.POST)
         if form.is_valid():
             # User registration
             username = form.cleaned_data['username']
@@ -24,8 +24,8 @@ def registrazione_view(request):
             login(request, user)
             return HttpResponseRedirect('/')
     else:
-        # New session, forms empty
-        form = FormRegistrazione()
+        # New session, empty form
+        form = SignUpForm()
 
     context = {'form': form}
-    return render(request, 'accounts/registrazione.html', context)
+    return render(request, 'accounts/signup_it.html', context)
