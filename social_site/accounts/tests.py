@@ -1,13 +1,17 @@
 from django.test import TestCase
 from django.urls import reverse
 from http import HTTPStatus
-from accounts.views import registrazione_view
 
-# Create your tests here.
-class Registrazione_view_Tests(TestCase):
-    """ (view) registrazione_view's Tests class """
 
-    def test_registrazione_view_url_by_name(self):
-        url = reverse('registration_view')
+class SignUpViewTests(TestCase):
+    """
+    (view) Signup_view tests.
+
+    A class that perform the following tests:
+    1 - Url by name
+    """
+
+    def test_signup_view_url_by_name(self):
+        url = reverse('signup_view')
         response = self.client.get(url)
         self.assertEquals(response.status_code, HTTPStatus.OK)
