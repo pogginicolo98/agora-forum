@@ -1,5 +1,6 @@
 <!-- Base template for all pages -->
 {% load static %}
+
 <!doctype html>
 <html lang="it">
   <head>
@@ -27,9 +28,9 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <!-- Search tool -->
-          <form class="form-inline my-2 my-lg-0" action="{% url 'funzione_cerca' %}">
-            <input name="q" class="form-control mr-sm-2" type="search" placeholder="Cosa stai cercando?" aria-label="Search">
+          <!-- Search bar -->
+          <form class="form-inline my-2 my-lg-0" action="{% url 'search_bar' %}">
+            <input name="search" class="form-control mr-sm-2" type="search" placeholder="Cerca su Agorà" aria-label="Search">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Cerca</button>
           </form>
 
