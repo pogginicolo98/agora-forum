@@ -2,13 +2,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.list import ListView
-from forum.models import Discussione, Sezione, Post
+from forum.models import Discussion, Section, Post
 
 
 class Homepage(ListView):
     """ ListView that shows a list of all sections active in the forum """
 
-    queryset = Sezione.objects.all()
+    queryset = Section.objects.all().order_by('pk')
     template_name = 'core/homepage_it.html'
     context_object_name = 'sections'
 
@@ -25,7 +25,7 @@ def user_profile_view(request, username):
     # Get the user corresponding the username passed through the url user/'username' and show the profile page
 
     user = get_object_or_404(User, username=username)
-    user_discussions = Discussione.objects.filter(autore_discussione=user).order_by('-pk')
+    user_discussions = Discussion.objects.filter(discussion_author=user).order_by('-pk')
     context = {
         'user': user,
         'user_discussions': user_discussions
@@ -41,9 +41,11 @@ def search_bar(request):
         querystring = request.GET.get('search')
         if len(querystring) == 0:
             return redirect('/search/')
-        discussions = Discussione.objects.filter(titolo__icontains=querystring)
-        posts = Post.objects.filter(contenuto__icontains=querystring)
+        discussions = Discussion.objects.filter(title__icontains=querystring)
+        print(discussions)
+        posts = Post.objects.filter(content__icontains=querystring)
         users = User.objects.filter(username__icontains=querystring)
+        print(users)
         context = {
             'discussions': discussions,
             'posts': posts,

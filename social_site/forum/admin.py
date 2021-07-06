@@ -1,30 +1,45 @@
 from django.contrib import admin
-from forum.models import Discussione, Post, Sezione
+from forum.models import Discussion, Post, Section
 
-# Register your models here.
-class DiscussioneModelAdmin(admin.ModelAdmin):
-    """ Settings in order to improve management and visualization of Discussion's page in the admin's panel
-        'autore_discussione' need '__username' in order to get the parameter as a string and execute the query """
 
-    model = Discussione
-    list_display = ['titolo', 'sezione_appartenenza', 'autore_discussione']
-    search_fields = ['titolo', 'autore_discussione__username']
-    list_filter = ['sezione_appartenenza', 'data_creazione']
+class DiscussionModelAdmin(admin.ModelAdmin):
+    """
+    Settings to improve management and visualization of Discussion's page in the admin panel.
+
+    Displayed attributes: title, section, author.
+    'author' need '__username' in order to get the parameter as a string and execute the query.
+    """
+
+    model = Discussion
+    list_display = ['title', 'discussion_section', 'discussion_author']
+    search_fields = ['title', 'discussion_author__username']
+    list_filter = ['discussion_section', 'creation_date']
+
 
 class PostModelAdmin(admin.ModelAdmin):
-    """ Settings in order to improve management and visualization of Post's page in the admin's panel """
+    """
+    Settings in order to improve management and visualization of Post's page in the admin panel.
+
+    Displayed attributes: author, discussion.
+    """
 
     model = Post
-    list_display = ['autore_post', 'discussione']
-    search_fields = ['contenuto']
-    list_filter = ['data_creazione', 'autore_post']
+    list_display = ['post_author', 'post_discussion']
+    search_fields = ['content']
+    list_filter = ['creation_date', 'post_author']
 
-class SezioneModelAdmin(admin.ModelAdmin):
-    """ Settings in order to improve management and visualization of Section's page in the admin's panel """
 
-    model = Sezione
-    list_display = ['nome_sezione', 'descrizione']
+class SectionModelAdmin(admin.ModelAdmin):
+    """
+    Settings in order to improve management and visualization of Post's page in the admin panel.
 
-admin.site.register(Discussione, DiscussioneModelAdmin)
+    Displayed attributes: section, description.
+    """
+
+    model = Section
+    list_display = ['name', 'description']
+
+
+admin.site.register(Discussion, DiscussionModelAdmin)
 admin.site.register(Post, PostModelAdmin)
-admin.site.register(Sezione, SezioneModelAdmin)
+admin.site.register(Section, SectionModelAdmin)

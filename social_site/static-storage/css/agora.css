@@ -5,3 +5,13 @@ body {
 a, a:hover{
   color: #17a2b8;
 }
+
+.asteriskField {
+    display: none;
+}
+
+a.select, a.select:hover {
+    color: white;
+    background-color: #17a2b8;
+}
+

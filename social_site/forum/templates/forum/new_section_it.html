@@ -1,15 +1,15 @@
-<!-- Create section (for staff) page -->
+<!-- New section page -->
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
 <!-- Dynamic title -->
 {% block head_title %}Nuova sezione | {{ block.super }}{% endblock %}
 
-<!-- Change password forms -->
+<!-- New section form -->
 {% block content %}
   <div class="row justify-content-center mt-4">
     <div class="col-6">
-      <h2>Crea nuova sezione</h2>
+      <h2>Nuova sezione</h2>
       <form method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         {{ form|crispy }}

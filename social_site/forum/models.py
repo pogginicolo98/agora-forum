@@ -3,72 +3,88 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from math import ceil
 
-# Create your models here.
-class Sezione(models.Model):
-    """ The 'Sections' divide the site in discussion categories.
-        Each 'Section' contains several 'Discussions'
-        Only site administrators can create 'Sections' """
 
-    nome_sezione = models.CharField(max_length=80)
-    descrizione = models.CharField(max_length=150, blank=True, null=True)
-    logo_sezione = models.ImageField(blank=True, null=True)
+class BaseModel(models.Model):
+    """ Base Model class for explicit objects attribute to avoid 'Unresolved attribute reference...' """
+    objects = models.Manager()
+
+    class Meta:
+        abstract = True
+
+
+class Section(BaseModel):
+    """
+    The 'Sections' divide the site in discussion categories.
+    Each 'Section' contains several 'Discussions'.
+    Only site administrators can create 'Sections'.
+    """
+
+    name = models.CharField(max_length=80)
+    description = models.CharField(max_length=150, blank=True, null=True)
+    logo = models.ImageField(blank=True, null=True, default='image_empty.png')
 
     def __str__(self):
-        return self.nome_sezione
+        return self.name
 
     def get_absolute_url(self):
-        return reverse('sezione_view', kwargs={'pk': self.pk})
+        return reverse('section_view', kwargs={'pk': self.pk})
 
     def get_last_discussions(self):
-        return Discussione.objects.filter(sezione_appartenenza=self).order_by('-data_creazione')[:2]
+        return Discussion.objects.filter(discussion_section=self).order_by('-creation_date')[:2]
 
     def get_number_of_posts_in_section(self):
-        return Post.objects.filter(discussione__sezione_appartenenza=self).count()
+        return Post.objects.filter(post_discussion__discussion_section=self).count()
 
     class Meta:
         verbose_name = 'Sezione'
         verbose_name_plural = 'Sezioni'
-        ordering = ['nome_sezione']
+        ordering = ['name']
 
-class Discussione(models.Model):
-    """ 'Discussions' are created by 'Users'.
-        Each 'Discussion' belongs to a 'Section'
-        Each 'Discussion' cointain several 'Posts' """
 
-    titolo = models.CharField(max_length=120)
-    data_creazione = models.DateTimeField(auto_now_add=True)
-    autore_discussione = models.ForeignKey(User, on_delete=models.CASCADE, related_name='discussioni')
-    sezione_appartenenza = models.ForeignKey(Sezione, on_delete=models.CASCADE)
+class Discussion(BaseModel):
+    """
+    'Discussions' are created by 'Users'.
+    Each 'Discussion' belongs to a 'Section'.
+    Each 'Discussion' contains several 'Posts'.
+    """
+
+    title = models.CharField(max_length=120)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    discussion_author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='discussions')
+    discussion_section = models.ForeignKey(Section, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.titolo
+        return self.title
 
     def get_absolute_url(self):
-        return reverse('visualizza_discussione', kwargs={'pk': self.pk})
+        return reverse('discussion_view', kwargs={'pk': self.pk})
 
     def get_n_pages(self):
-        posts_discussione = self.post_set.count()
-        n_pagine = ceil(posts_discussione / 5)
-        return n_pagine
+        discussion_posts = self.post_set.count()
+        pages = ceil(discussion_posts / 5)
+        return pages
 
     class Meta:
         verbose_name = 'Discussione'
         verbose_name_plural = 'Discussioni'
-        ordering = ['data_creazione']
+        ordering = ['creation_date']
 
-class Post(models.Model):
-    """ 'Posts' are created by 'Users'
-        Each 'Post' belogns to a 'Discussion' """
 
-    autore_post = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
-    contenuto = models.TextField()
-    data_creazione = models.DateTimeField(auto_now_add=True)
-    discussione = models.ForeignKey(Discussione, on_delete=models.CASCADE)
+class Post(BaseModel):
+    """
+    'Posts' are created by 'Users'.
+    Each 'Post' belongs to a 'Discussion'.
+    """
+
+    post_author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    content = models.TextField()
+    creation_date = models.DateTimeField(auto_now_add=True)
+    post_discussion = models.ForeignKey(Discussion, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.autore_post.username
+        return self.post_author.username
 
     class Meta:
         verbose_name = 'Post'
-        verbose_name_plural = 'Posts'
-        ordering = ['data_creazione']
+        verbose_name_plural = 'Post'
+        ordering = ['creation_date']

@@ -27,7 +27,7 @@ class UserListTests(TestCase):
     """
 
     def test_UserList_url_by_name(self):
-        url = reverse('users')
+        url = reverse('users_list')
         response = self.client.get(url)
         self.assertEquals(response.status_code, HTTPStatus.OK)
 

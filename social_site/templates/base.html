@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{% static 'css/agora.css' %}">
 
     <script src="https://kit.fontawesome.com/1504e1d7eb.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/agora.js' %}"></script>
+
     <title>{% block head_title %}Agorà{% endblock %}</title>
   </head>
   <body>
@@ -34,12 +36,13 @@
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Cerca</button>
           </form>
 
+          <!-- Users list -->
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'user_list' %}">Lista Utenti <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{% url 'users_list' %}">Lista Utenti <span class="sr-only">(current)</span></a>
             </li>
+            <!-- Dropdown menu with profile, change password and logout -->
             {% if request.user.is_authenticated %}
-              <!-- Dropdown menu with profile, change password and logout -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {{ request.user.username }}
@@ -52,9 +55,9 @@
                 </div>
               </li>
             {% else %}
-              <!-- Registration and login links -->
+              <!-- Sign up and login -->
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'registration_view' %}">Registrati</a>
+                <a class="nav-link" href="{% url 'signup_view' %}">Iscriviti</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -71,6 +74,11 @@
 
       {% endblock %}
     </div>
+
+    <!-- Optional script -->
+    {% block script %}
+
+    {% endblock %}
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

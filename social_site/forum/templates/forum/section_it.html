@@ -1,0 +1,48 @@
+<!-- Section page -->
+{% extends 'base.html' %}
+
+<!-- Dynamic title -->
+{% block head_title %}{{ section.name }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="card my-3">
+    <!-- Section info -->
+    <div class="card-header">
+      <h3>{{ section.name }}</h3>
+      {% if section.description %}
+        <h6 class="card-text">{{ section.description }}</h6>
+      {% endif %}
+    </div>
+
+    <div class="card-body">
+      <a class="btn btn-sm btn-info" href="{% url 'new_discussion' pk=section.pk%}">Crea Discussione</a>
+      <table class="table mt-3">
+        <!-- Create new discussion -->
+        <thead>
+          <tr class="row">
+            <th class="col-lg-6 col-5">Titolo</th>
+            <th class="col-lg-2 col-3">Autore</th>
+            <th class="d-none d-lg-inline col-lg-2">Post</th>
+            <th class="col-lg-2 col-4">Ultimo post</th>
+          </tr>
+        </thead>
+
+        <!-- Discussions of the section -->
+        <tbody>
+          <tr class="row">
+            {% for discussion in discussions %}
+              <td class="col-lg-6 col-5">
+                <a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a>
+              </td>
+              <td class="col-lg-2 col-3">
+                <a href="{% url 'user_profile' username=discussion.discussion_author.username %}">{{ discussion.discussion_author }}</a>
+              </td>
+              <td class="d-none d-lg-inline col lg-2">{{ discussion.post_set.count }}</td>
+              <td class="col-lg-2 col-4">{{ discussion.post_set.last.creation_date|timesince }}</td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
