@@ -1,0 +1,67 @@
+<!-- Discussion page -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+<!-- Dynamic title -->
+{% block head_title %}{{ discussion.title }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+  {% for post in page_obj %}
+    <div class="card my-3">
+      {% if not page_obj.has_previous and forloop.first %}
+        <div class="card-header pb-0">
+          <h3>{{ discussion.title }}</h3>
+          <p class="text-muted">{{ discussion.creation_date|date:'D d M Y' }}
+          <br>In: {{ discussion.discussion_section }}</p>
+        </div>
+      {% else %}
+        <div class="card-header py-1">
+          <p class="text-muted mb-0">{{ post.creation_date|date:'d M Y' }}
+            {% if request.user == post.post_author %}
+              <a href="{% url 'delete_post' id=discussion.pk pk=post.pk %}"> | <i class="fas fa-minus-circle" style="color:#D32F2F;"></i></a>
+            {% endif %}
+          </p>
+        </div>
+      {% endif %}
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-2 col-12">
+            <p class="mb-0"><a href="{% url 'user_profile' username=post.post_author.username %}"><strong>{{ post.post_author }}</strong></a></p>
+            <p class="text-muted mb-0">Utente da: {{ post.post_author.date_joined|date:'M Y' }}</p>
+            <p class="text-muted mb-0">Post: {{ post.post_author.posts.count }}</p>
+          </div>
+          <div class="col-lg-10 col-12">
+            <p class="my-0">{{ post.content|linebreaks }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+  {% if request.user.is_authenticated %}
+    {% include 'forum/reply_it.html' %}
+  {% else %}
+    <div class="alert alert-info" role="alert">
+      Per partecipare alla discussione devi prima effettuare il <a href="{% url 'login' %}?next={{ request.get_full_path }}">login</a>
+    </div>
+  {% endif %}
+
+  <div class="text-center">
+      <span class="step-links">
+          {% if page_obj.has_previous %}
+              <a href="?page=1">&laquo; prima</a>
+              <a href="?page={{ page_obj.previous_page_number }}">precedente</a>
+          {% endif %}
+
+          <span class="current">
+              Pagina {{ page_obj.number }} di {{ page_obj.paginator.num_pages }}.
+          </span>
+
+          {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">successiva</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">ultima &raquo;</a>
+          {% endif %}
+      </span>
+  </div>
+{% endblock %}

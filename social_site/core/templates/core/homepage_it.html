@@ -5,7 +5,7 @@
   <!-- Create section visible only for staff users -->
   {% if request.user.is_staff %}
     <div class="card-body pl-0">
-      <a class="btn btn-sm btn-danger" href="{% url 'crea_sezione' %}">Crea Sezione</a>
+      <a class="btn btn-sm btn-danger" href="{% url 'new_section' %}">Crea Sezione</a>
     </div>
   {% endif %}
 
@@ -13,8 +13,16 @@
     <div class="card my-3">
       <!-- Section header -->
       <div class="card-header">
-        <h5><a href="{{ section.get_absolute_url }}"><strong>{{ section.nome_sezione }}</strong></a></h5>
-        <p class="mb-0">{{ section.descrizione }}</p>
+        <h5>
+          <a href="{{ section.get_absolute_url }}"><strong>{{ section.name }}</strong></a>
+          {% if request.user.is_staff %}
+            <a href="{% url 'delete_section' pk=section.pk %}"> | <i class="fas fa-minus-circle" style="color:#D32F2F;"></i></a>
+          {% endif %}
+        </h5>
+
+        {% if section.description %}
+          <p class="mb-0">{{ section.description }}</p>
+        {% endif %}
       </div>
 
       <!-- Section body -->
@@ -22,8 +30,10 @@
         <div class="row">
           <!-- Section data -->
           <div class="col-lg-3">
-            <img class="img-fluid rounded-lg" src="{{ section.logo_sezione.url }}" alt="logo della sezione">
-            <p class="text-muted">Discussioni totali: {{ section.discussione_set.count }}<br>
+            <a href="{{ section.get_absolute_url }}">
+              <img class="img-fluid rounded-lg" src="{{ section.logo.url }}" alt="logo della sezione">
+            </a>
+            <p class="text-muted">Discussioni totali: {{ section.discussion_set.count }}<br>
             Messaggi totali: {{ section.get_number_of_posts_in_section }}</p>
           </div>
           <!-- Discussions data -->
@@ -34,10 +44,10 @@
                 {% for discussion in section.get_last_discussions %}
                   <tr class="row">
                     <td class="col-lg-7 col-6">
-                      <a href="{% url 'visualizza_discussione' pk=discussion.pk %}">{{ discussion.titolo }}</a>
+                      <a href="{% url 'discussion_view' pk=discussion.pk %}">{{ discussion.title }}</a>
                     </td>
                     <td class="col-lg-3 col-3">
-                      <a href="{% url 'user_profile' username=discussion.autore_discussione.username %}">{{ discussion.autore_discussione.username }}</a>
+                      <a href="{% url 'user_profile' username=discussion.discussion_author.username %}">{{ discussion.discussion_author.username }}</a>
                     </td>
                     <td class="col-lg-2 col-3">
                       Post: {{ discussion.post_set.count }}

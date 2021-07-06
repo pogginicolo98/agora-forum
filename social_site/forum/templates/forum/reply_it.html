@@ -1,0 +1,9 @@
+<!-- Post creation page -->
+{% load crispy_forms_tags %}
+
+<!-- Reply form -->
+<form class="mb-3" action="{% url 'reply' pk=discussion.pk %}" method="POST" novalidate>
+  {% csrf_token %}
+  {{ reply_form|crispy }}
+  <input type="submit" id="reply-button" class="btn btn-info" value="Invia" disabled>
+</form>

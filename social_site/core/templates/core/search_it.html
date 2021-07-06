@@ -7,38 +7,43 @@
 {% block content %}
   <h1 class="mt-3">Risultati di ricerca</h1>
   <hr>
-  <div class="row mt-3">
+  <div class="row mt-3" id="search-categories">
+    <!-- Search categories -->
+    <nav class="nav nav-pills col-12 justify-content-around justify-content-lg-start">
+      <a class="nav-link" href="#" id="search-discussions">Discussioni</a>
+      <a class="nav-link" href="#" id="search-posts">Post</a>
+      <a class="nav-link" href="#" id="search-users">Utenti</a>
+    </nav>
+  </div>
+  <hr>
+  <div class="row">
+    <!-- Discussions found -->
+    <div class="col-12" id="discussions">
+      {% if discussions %}
+        {% for discussion in discussions %}
+          <p>✧ <a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></p>
+        {% endfor %}
+      {% else %}
+        <p>-----</p>
+      {% endif %}
+    </div>
+
     <!-- Post found -->
-    <div class="col-4">
-      <h5><strong>Post</strong></h5>
-      <hr>
+    <div class="col-12" id="posts">
       {% if posts %}
         {% for post in posts %}
-          <p>{{ post.contenuto|truncatewords:'15' }}</p>
-          <p class="mb-0">by <a href="{% url 'user_profile' username=post.autore_post.username %}">@{{ post.autore_post.username }}</a></p>
-          <p>in <a href="{{ post.discussione.get_absolute_url }}">{{ post.discussione.titolo }}</a></p>
+          <p>{{ post.content|truncatewords:'35' }}</p>
+          <p class="mb-0">by <a href="{% url 'user_profile' username=post.post_author.username %}">@{{ post.post_author.username }}</a></p>
+          <p>in <a href="{{ post.post_discussion.get_absolute_url }}">{{ post.post_discussion.title }}</a></p>
           <hr>
         {% endfor %}
       {% else %}
         <p>-----</p>
       {% endif %}
     </div>
-    <!-- Discussions found -->
-    <div class="col-4">
-      <h5><strong>Discussioni</strong></h5>
-      <hr>
-      {% if Discussions %}
-        {% for discussion in discussions %}
-          <p>✧ <a href="{{ discussion.get_absolute_url }}">{{ discussion.titolo }}</a></p>
-        {% endfor %}
-      {% else %}
-        <p>-----</p>
-      {% endif %}
-    </div>
+
     <!-- Users found -->
-    <div class="col-4">
-      <h5><strong>Utenti</strong></h5>
-      <hr>
+    <div class="col-12" id="users">
       {% if users %}
         {% for user in users %}
           <p><a href="{% url 'user_profile' username=user.username %}">@{{ user.username }}</a></p>
@@ -48,4 +53,13 @@
       {% endif %}
     </div>
   </div>
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+    document.body.onload = display_discussions;
+    document.getElementById("search-discussions").onclick = display_discussions;
+    document.getElementById("search-posts").onclick = display_posts;
+    document.getElementById("search-users").onclick = display_users;
+  </script>
 {% endblock %}

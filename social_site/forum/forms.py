@@ -1,27 +1,56 @@
 from django import forms
-from forum.models import Discussione, Post
+from forum.models import Discussion, Post, Section
 
-class DiscussioneModelForm(forms.ModelForm):
-    contenuto = forms.CharField(
-        widget=forms.Textarea(attrs={'placeholder': 'Di cosa vuoi parlarci?'}),
+
+class SectionModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Section
+        fields = ['name', 'description', 'logo']
+        labels = {
+            'name': 'Nome',
+            'description': 'Descrizione',
+            'logo': 'Immagine di copertina'
+        }
+
+
+class DiscussionModelForm(forms.ModelForm):
+    """
+    A form class for new discussions.
+
+    Title and content are required.
+    """
+
+    content = forms.CharField(
+        widget=forms.Textarea(attrs={'placeholder': 'A cosa stai pensando?'}),
         max_length=400,
         label='Primo Messaggio'
     )
+
     class Meta:
-        model = Discussione
-        fields = ['titolo', 'contenuto']
+        model = Discussion
+        fields = ['title', 'content']
         widgets = {
-            'titolo': forms.TextInput(attrs={'placeholder': 'Titolo della discussione'})
+            'title': forms.TextInput(attrs={'placeholder': 'Titolo della discussione'})
+        }
+        labels = {
+            'title': 'Titolo'
         }
 
+
 class PostModelForm(forms.ModelForm):
+    """
+    A form class for new post.
+
+    Content is required.
+    """
 
     class Meta:
         model = Post
-        fields= ['contenuto']
+        fields = ['content']
         widgets = {
-            'contenuto': forms.Textarea(attrs={'rows': 5})
+            'content': forms.Textarea(attrs={'placeholder': 'Rispondi...', 'rows': 5, 'id': 'content', 'onkeyup': 'reply()'})
         }
         labels = {
-            'contenuto': 'Messaggio'
+            'content': False
         }

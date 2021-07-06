@@ -1,4 +1,4 @@
-<!-- Discussion creation page -->
+<!-- New discussion page -->
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
@@ -7,8 +7,8 @@
 
 {% block content %}
   <div class="row justify-content-center mt-4">
-    <div class="col-6">
-      <h2>Crea nuova discussione in: {{ sezione }}</h2>
+    <div class="col-lg-6 col-12">
+      <h2>Crea nuova discussione in: {{ discussion_section }}</h2>
       <form method="POST" novalidate>
         {% csrf_token %}
         {{ form|crispy }}

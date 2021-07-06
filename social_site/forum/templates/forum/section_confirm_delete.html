@@ -2,14 +2,14 @@
 {% extends 'base.html' %}
 
 <!-- Dynamic title -->
-{% block head_title %}Elimina post | {{ block.super }}{% endblock %}
+{% block head_title %}Elimina sezione | {{ block.super }}{% endblock %}
 
 {% block content %}
   <div class="row justify-content-center mt-3">
     <div class="col-lg-4 col-8 text-center">
       <form method="POST">
         {% csrf_token %}
-        <h4>Vuoi cancellare il post?</h4>
+        <h4>Vuoi cancellare la sezione?</h4>
         <A type="button" href="/" class="btn btn-info mr-3" >Annulla</A>
         <input type="submit" class="btn btn-danger ml-3" value="Conferma">
       </form>
