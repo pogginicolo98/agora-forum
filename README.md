@@ -1,4 +1,4 @@
-# Forum site - Personal Project
+# Agorà forum - Personal Project
 
 Project to practice with Django and Bootstrap4 frameworks.
 This web app is a forum site with the following features:
