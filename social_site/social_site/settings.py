@@ -26,7 +26,7 @@ SECRET_KEY = password.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -131,6 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATICFILES_DIRS = [BASE_DIR / 'static-storage']
+STATIC_ROOT = Path(BASE_DIR).resolve().parent / 'static-serve'
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = Path(BASE_DIR).resolve().parent / 'media-serve'
