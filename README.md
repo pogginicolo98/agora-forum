@@ -45,5 +45,6 @@ First of all populate ```USER.pythonanywhere.com/setup/password_empty.py``` with
 (USER.pythonanywhere.com) USER.pythonanywhere.com$ python manage.py collectstatic
 ```
 #### Edit the static files directories on pythonanywhere web tab as folowing:
-![Static files pythonanywhere](.images/static files.png)
+![Static files pythonanywhere](.images/"static files.png")
+
 Reload the Web app so it should work properly.
