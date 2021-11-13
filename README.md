@@ -13,7 +13,7 @@ For each section, users can start new thread or join existing ones. Each user ca
 Through the search bar you can search for keywords in discussions, posts and users data.
 Users can register or log in if they have previously registered. There is a password reset system with identity verification via email.
 
-#### Live demo: [Agorà forum](http://pogginicolo98.pythonanywhere.com/)
+#### Live demo: [Agorà forum](#) (Temporarily not available)
 
 #### Udemy course: [Guida Pratica e Completa a Django, Python e Bootstrap](https://www.udemy.com/course/guida-pratica-e-completa-a-django-2-e-bootstrap-4/)
 
